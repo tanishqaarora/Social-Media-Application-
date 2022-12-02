@@ -5,12 +5,19 @@ const middleware = require('./middleware');
 const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('./database');
+const session = require('express-session');
 
 app.set('view engine', 'pug');
 app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(session({
+    secret: "sign session",
+    resave: true,
+    saveUninitialized: false
+}))
 
 //Routes
 const loginRoute = require('./routes/loginRoutes');
@@ -23,7 +30,8 @@ app.use('/register', registerRoute);
 app.get('/', middleware.requireLogin, (req, res, next)=>{
 
     res.render('home', {
-        pageTitle: 'Home page'
+        pageTitle: 'Home',
+        userLoggedIn: req.session.user
     })
 })
 
