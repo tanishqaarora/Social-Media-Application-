@@ -3,7 +3,7 @@ extends layouts/login-layout.pug
 block content 
     .loginContainer 
         h1 Register
-        form#registerForm(action="POST", onsubmit="event.preventDefault(); validateForm();")
+        form#registerForm(method="post", onsubmit="event.preventDefault(); validateForm();")
 
             p.errorMessage #{errorMessage}
 
