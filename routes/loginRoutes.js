@@ -11,23 +11,24 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 router.get('/', (req, res, next)=>{
+    
     res.status(200).render('login');
 })
 
 router.post('/', async (req, res, next)=>{
-    
+   
     var payload = req.body;
 
     if(req.body.logUsername && req.body.logPassword) {
         var user = await User.findOne({
             $or: [
                 { username: req.body.logUsername },
-                { email: req.body.username }
+                { email: req.body.logUsername }
             ]
         })
         .catch((error) => {
             console.log(error);
-            payload.errorMessage = 'Something went wrong';
+            payload.errorMessage = 'Something went wrong.';
             res.status(200).render('login', payload);
         });
 
@@ -39,12 +40,13 @@ router.post('/', async (req, res, next)=>{
                 req.session.user = user;
                 return res.redirect('/');
             }
-        }    
-            payload.errorMessage = 'Login credentials incorrect';
-            res.status(200).render('login', payload);
+        }   
+
+        payload.errorMessage = 'Login credentials incorrect';
+        return res.status(200).render('login', payload);
     }
 
-    payload.errorMessage = 'Make sure each field has a valid value';
+    payload.errorMessage = 'Make sure each field has a valid value.';
     res.status(200).render('login');
     
 })
