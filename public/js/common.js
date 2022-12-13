@@ -31,6 +31,12 @@ $('#submitPostButton').click(() => {
     })
 })
 
+// attaching the click handler to the document itself
+// so the whole page will listen for clicks
+$(document).on("click", ".likeButton", () => {
+    alert('button cliked');
+})
+
 function createPostHtml(postData) {
 
     var postedBy = postData.postedBy;
@@ -64,7 +70,7 @@ function createPostHtml(postData) {
                                 </button>
                             </div>
                             <div class='postButtonContainer'>
-                                <button>
+                                <button class="likeButton">
                                     <i class='far fa-heart'></i>
                                 </button>
                             </div>
