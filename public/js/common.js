@@ -33,9 +33,32 @@ $('#submitPostButton').click(() => {
 
 // attaching the click handler to the document itself
 // so the whole page will listen for clicks
-$(document).on("click", ".likeButton", () => {
-    alert('button cliked');
+$(document).on("click", ".likeButton", (event) => {
+    var button = $(event.target);
+    var postId = getPostIdFromElement(button);
+    
+    if(postId === undefined) return;
+
+    // to update post - add like to it
+    $.ajax({
+        url: "/api/posts",
+        type: "PUT",
+        success: (postData) => {
+            console.log(postData);
+        }
+    })
+
 })
+
+function getPostIdFromElement(element) {
+    var isRoot = element.hasClass("post");
+    var rootElement = isRoot == true ? element : element.closest(".post");
+    var postId = rootElement.data().id;
+
+    if(postId === undefined) return alert("Post id undefined");
+
+    return postId;
+}
 
 function createPostHtml(postData) {
 
@@ -43,7 +66,7 @@ function createPostHtml(postData) {
     var displayName = postedBy.firstName + " " + postedBy.lastName; 
     var timestamp = timeDifference(new Date(), new Date(postData.createdAt));
 
-    return `<div class='post'>
+    return `<div class='post' data-id='${postData._id}'>
 
                 <div class='mainContentContainer'>
                     <div class='userImageContainer'>
