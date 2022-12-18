@@ -36,10 +36,13 @@ app.use('/api/posts', postsApiRoute);
 
 app.get('/', middleware.requireLogin, (req, res, next)=>{
 
-    res.render('home', {
+    var payload = {
         pageTitle: 'Home',
-        userLoggedIn: req.session.user
-    })
+        userLoggedIn: req.session.user,
+        userLoggedInJs: JSON.stringify(req.session.user)
+    }
+
+    res.status(200).render('home', payload);
 })
 
 app.listen(port, ()=> console.log('Server is running on port:', port));
