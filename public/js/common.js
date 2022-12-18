@@ -41,10 +41,12 @@ $(document).on("click", ".likeButton", (event) => {
 
     // to update post - add like to it
     $.ajax({
-        url: "/api/posts",
+        url: `/api/posts/${postId}/like`,
         type: "PUT",
         success: (postData) => {
-            console.log(postData);
+            
+            button.find("span").text(postData.likes.length || "");
+
         }
     })
 
@@ -95,6 +97,7 @@ function createPostHtml(postData) {
                             <div class='postButtonContainer'>
                                 <button class="likeButton">
                                     <i class='far fa-heart'></i>
+                                    <span>${postData.likes.length || ""}</span>
                                 </button>
                             </div>
                         </div>
