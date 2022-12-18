@@ -68,5 +68,11 @@ router.put("/:id/like", async (req, res, next) => {
     
     res.status(200).send(post);
 })
+ 
+router.post("/:id/retweet", async (req, res, next) => {
+
+    res.status(200).send('yes runnn');
+})
+
 
 module.exports = router;

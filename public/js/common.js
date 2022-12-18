@@ -59,6 +59,23 @@ $(document).on("click", ".likeButton", (event) => {
 
 })
 
+$(document).on("click", ".retweetButton", (event) => {
+    var button = $(event.target);
+    var postId = getPostIdFromElement(button);
+    
+    if(postId === undefined) return;
+
+    $.ajax({
+        url: `/api/posts/${postId}/retweet`,
+        type: "POST",
+        success: (postData) => {
+            console.log(postData);
+
+        }
+    })
+
+})
+
 function getPostIdFromElement(element) {
     var isRoot = element.hasClass("post");
     var rootElement = isRoot == true ? element : element.closest(".post");
@@ -98,8 +115,8 @@ function createPostHtml(postData) {
                                     <i class='far fa-comment'></i>
                                 </button>
                             </div>
-                            <div class='postButtonContainer'>
-                                <button>
+                            <div class='postButtonContainer greeen'>
+                                <button class="retweetButton">
                                     <i class='fas fa-retweet'></i>
                                 </button>
                             </div>
