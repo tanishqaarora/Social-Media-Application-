@@ -113,10 +113,10 @@ function createPostHtml(postData) {
 
     var retweetText = '';
     if(isRetweet) {
-        retweetText = `<span>
+        retweetText =  `<span>
                         <i class='fas fa-retweet'></i>
-                        Retweeted by <a href ='/profile/${retweetedBy}'>@${retweetedBy}
-                       </span>`
+                        Retweeted by <a href='/profile/${retweetedBy}'>@${retweetedBy}</a>    
+                        </span>`
     }
 
     return `<div class='post' data-id='${postData._id}'>
@@ -138,7 +138,7 @@ function createPostHtml(postData) {
                         </div>
                         <div class='postFooter'>
                             <div class='postButtonContainer'>
-                                <button>
+                                <button data-bs-toggle='modal' data-bs-target='#replyModal'>
                                     <i class='far fa-comment'></i>
                                 </button>
                             </div>
