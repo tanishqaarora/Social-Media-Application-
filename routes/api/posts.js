@@ -70,8 +70,19 @@ router.put("/:id/like", async (req, res, next) => {
 })
  
 router.post("/:id/retweet", async (req, res, next) => {
+    var postId = req.params.id;
+    var userId = req.session.user._id;
 
-    res.status(200).send('yes runnn');
+    // Try and delete retweet
+    var deletedPost = await Post.findOneAndDelete({ postedBy: userId, retweetData: postId })
+    .catch(error => {
+        console.log(error);
+        res.sendStatus(400);
+    })
+
+    var option = deletedPost != null ? "$pull" : "$addToSet";
+
+    return res.status(200).send(option);
 })
 
 
