@@ -22,6 +22,11 @@ router.get("/", (req, res, next) => {
     });
 })
 
+router.get("/:id", (req, res, next) => {
+    return res.status(200).send("This is awesome");
+
+})
+
 router.post("/", async (req, res, next) => {
 
     if(!req.body.content) {

@@ -33,6 +33,15 @@ $('#submitPostButton').click(() => {
     })
 })
 
+$('#replyModal').on('show.bs.modal', (event) => {
+    var button = $(event.relatedTarget);
+    var postId = getPostIdFromElement(button);
+
+    $.get("/api/posts/" + postId, results => {
+        console.log(results);
+    })
+})
+
 $(document).on("click", ".likeButton", (event) => {
     var button = $(event.target);
     var postId = getPostIdFromElement(button);
@@ -99,8 +108,6 @@ function createPostHtml(postData) {
     var isRetweet = postData.retweetData !== undefined;
     var retweetedBy = isRetweet ? postData.postedBy.username : null;
     postData = isRetweet ? postData.retweetData : postData;
-
-    console.log(isRetweet);
 
     var postedBy = postData.postedBy;
 
