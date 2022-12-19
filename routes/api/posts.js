@@ -80,9 +80,35 @@ router.post("/:id/retweet", async (req, res, next) => {
         res.sendStatus(400);
     })
 
+    
     var option = deletedPost != null ? "$pull" : "$addToSet";
 
-    return res.status(200).send(option);
+    var repost = deletedPost;
+
+    // repost the retweet
+    if (repost == null) {
+        repost = await Post.create({ postedBy: userId, retweetData: postId })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(400);
+        })
+    }
+
+    // Insert user like
+    req.session.user = await User.findByIdAndUpdate(userId, { [option]: { retweets: repost._id } }, { new: true })
+    .catch(error => {
+        console.log(error);
+        res.sendStatus(400);
+    })
+
+    // Insert post like
+    var post = await Post.findByIdAndUpdate(postId, { [option]: { retweetUsers: userId } }, { new: true })
+    .catch(error => {
+        console.log(error);
+        res.sendStatus(400);
+    })
+
+    return res.status(200).send(post);
 })
 
 
