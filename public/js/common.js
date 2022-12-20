@@ -33,11 +33,16 @@ $('#submitPostButton, #submitReplyButton').click(() => {
     }
 
     $.post('/api/posts', data, postData => {
-        
-        var html = createPostHtml(postData);
-        $('.postsContainer').prepend(html);
-        textbox.val('');
-        button.prop('disabled', true);
+
+        if(postData.replyTo) {
+            location.reload();
+        }
+        else {
+            var html = createPostHtml(postData);
+            $('.postsContainer').prepend(html);
+            textbox.val('');
+            button.prop('disabled', true);
+        }
     })
 })
 
@@ -141,6 +146,22 @@ function createPostHtml(postData) {
                         </span>`
     }
 
+    var replyFlag = "";
+    if(postData.replyTo) {
+
+        if(!postData.replyTo._id) {
+            return alert('Reply to is not populated')
+        }
+        else if(!postData.replyTo.postedBy._id) {
+            return alert('Posted by is not populated')
+        }
+
+        var replyToUsername = postData.replyTo.postedBy.username;
+        replyFlag = `<div class='replyFlag'>
+                        Replying to <a href='/profile/${replyToUsername}'>@${replyToUsername}<a>
+                    </div>`;
+    }
+
     return `<div class='post' data-id='${postData._id}'>
                 <div class='postActionContainer'>
                     ${retweetText}    
@@ -155,6 +176,7 @@ function createPostHtml(postData) {
                             <span class='username'>@${postedBy.username}</span>
                             <span class='date'>${timestamp}</span>
                         </div>
+                        ${replyFlag}
                         <div class='postBody'>
                             <span>${postData.content}</span>
                         </div>
