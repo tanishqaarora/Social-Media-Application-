@@ -8,7 +8,7 @@ const Post = require('../../schemas/PostSchema');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 router.get("/", async (req, res, next) => {
-    var results = await getPosts();
+    var results = await getPosts({});
     res.status(200).send(results);
 })
 
