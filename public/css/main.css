@@ -277,7 +277,8 @@ button span {
     min-height: 66px;
 }
 
-.profileButton {
+.profileButton,
+.followButton {
     border: 1px solid var(--blue);
     color: var(--blue);
     font-weight: bold;
