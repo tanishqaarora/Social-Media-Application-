@@ -21,7 +21,15 @@ router.get("/", async (req, res, next) => {
         var followingOnly = searchObj.followingOnly == "true";
 
         if(followingOnly) {
-             var  objectIds = req.session.user.following;
+             var  objectIds = [];
+
+             if(!req.session.user.following) {
+                req.session.user.following = [];
+             }
+
+             req.session.user.following.forEach(user => {
+                objectIds.push(user);
+             })
 
             objectIds.push(req.session.user._id);
             searchObj.postedBy = { $in: objectIds};
